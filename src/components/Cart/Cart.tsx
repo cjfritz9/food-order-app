@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box, Button, List, ListItem } from '@chakra-ui/react';
+import { Box, Button, List } from '@chakra-ui/react';
 import styles from './Cart.module.css';
 import CartModal from '../UI/CartModal';
 import { CartContext, CartInterface } from '../../context/Cart.context';
@@ -10,16 +10,16 @@ interface Props {
 }
 
 const Cart: React.FC<Props> = ({ onDisplayCart }) => {
-  const { items, totalAmount } = useContext(CartContext) as CartInterface;
+  const { items, totalAmount, addItem, removeItem } = useContext(CartContext) as CartInterface;
 
   const hasItems = items.length > 0;
+  
+    const handleAddItem = (item: any) => {
+      addItem({...item, amount: 1});
+    };
 
   const handleRemoveItem = (id: string) => {
-    console.log(id);
-  };
-
-  const handleAddItem = (item: any) => {
-    console.log(item);
+    removeItem(id);
   };
 
   return (
