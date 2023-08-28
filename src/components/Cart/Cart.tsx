@@ -1,22 +1,51 @@
-import React from 'react';
-import { Box, Button, List } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Box, Button, List, ListItem } from '@chakra-ui/react';
 import styles from './Cart.module.css';
 import CartModal from '../UI/CartModal';
+import { CartContext, CartInterface } from '../../context/Cart.context';
+import CartItem from './CartItem';
 
-const Cart: React.FC = () => {
-  const cartItems = [{ id: 'c1', name: 'Sushi', amount: 2, price: 12.99 }].map(
-    (_item) => <Box />
-  );
+interface Props {
+  onDisplayCart: (option: boolean) => void;
+}
+
+const Cart: React.FC<Props> = ({ onDisplayCart }) => {
+  const { items, totalAmount } = useContext(CartContext) as CartInterface;
+
+  const hasItems = items.length > 0;
+
+  const handleRemoveItem = (id: string) => {
+    console.log(id);
+  };
+
+  const handleAddItem = (item: any) => {
+    console.log(item);
+  };
+
   return (
-    <CartModal>
-      <List>{cartItems}</List>
+    <CartModal onDisplayCart={onDisplayCart}>
+      <List className={styles['cart-items']}>
+        {items.map((item) => (
+          <CartItem
+            key={item.id}
+            {...item}
+            onAdd={() => handleAddItem(item)}
+            onRemove={() => handleRemoveItem(item.id)}
+          ></CartItem>
+        ))}
+      </List>
       <Box className={styles.total}>
         <Box as='span'>Total Amount</Box>
-        <Box as='span'>35.62</Box>
+        <Box as='span'>{`$${totalAmount.toFixed(2)}`}</Box>
       </Box>
       <Box className={styles.actions}>
-        <Button className={styles['button--alt']}>Close</Button>
-        <Button className={styles.button}>Order</Button>
+        <Button
+          className={styles['button--alt']}
+          onClick={() => onDisplayCart(false)}
+        >
+          Close
+        </Button>
+        {hasItems && <Button className={styles.button}>Order</Button>}
       </Box>
     </CartModal>
   );

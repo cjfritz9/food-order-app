@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Heading, ListItem } from '@chakra-ui/react';
 import styles from './MealItem.module.css';
 import MealItemForm from './MealItemForm';
+import { CartContext, CartInterface } from '../../../context/Cart.context';
 
 interface Props {
   id: string;
@@ -11,6 +12,17 @@ interface Props {
 }
 
 const MealItem: React.FC<Props> = ({ id, name, description, price }) => {
+  const { addItem } = useContext(CartContext) as CartInterface;
+
+  const handleAddToCart = (amount: number) => {
+    addItem({
+      id,
+      name,
+      amount,
+      price
+    });
+  };
+
   const formattedPrice = `$${price.toFixed(2)}`;
 
   return (
@@ -21,7 +33,7 @@ const MealItem: React.FC<Props> = ({ id, name, description, price }) => {
         <Box className={styles.price}>{formattedPrice}</Box>
       </Box>
       <Box>
-        <MealItemForm id={id} />
+        <MealItemForm id={id} onAddToCart={handleAddToCart} />
       </Box>
     </ListItem>
   );

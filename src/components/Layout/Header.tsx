@@ -4,14 +4,18 @@ import hero from '../../assets/meals.jpg';
 import CartButton from './CartButton';
 import styles from './Header.module.css'
 
-const Header: React.FC = () => {
+interface Props {
+  onDisplayCart: (option: boolean) => void;
+}
+
+const Header: React.FC<Props> = ({ onDisplayCart }) => {
   return (
     <>
       <Flex
         className={styles.header}
       >
         <Heading as='h1'>React Meals</Heading>
-        <CartButton />
+        <CartButton onDisplayCart={onDisplayCart} />
       </Flex>
       <Box
         className={styles['main-image']}

@@ -14,13 +14,15 @@ interface Props {
   };
 }
 
-const QuantityInput: React.FC<Props> = ({ label, input }) => {
+type Ref = HTMLInputElement | null;
+
+const QuantityInput = React.forwardRef<Ref, Props>(({ label, input }, ref) => {
   return (
     <Box className={styles.input}>
       <FormLabel htmlFor={input.id}>{label}</FormLabel>
-      <Input {...input} />
+      <Input ref={ref} {...input} />
     </Box>
   );
-};
+});
 
 export default QuantityInput;
